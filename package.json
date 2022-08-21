@@ -3,11 +3,11 @@
   "version": "2.0.0",
   "description": "",
   "main": "index.js",
-  "homepage": "https://maksymkushnirov.github.io/goit-39-js-hw-08",
+  "homepage": "https://github.com/VictorOlefir/goit-js-hw-08",
   "scripts": {
     "start": "parcel src/index.html",
     "dev": "parcel src/index.html",
-    "build": "parcel build src/*.html --public-url /goit-39-js-hw-08/"
+    "build": "parcel build src/*.html --public-url /goit-js-hw-08/"
   },
   "repository": {
     "type": "git",
