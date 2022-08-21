@@ -1,32 +1,31 @@
-import { galleryItems } from './gallery-items';
 import SimpleLightbox from 'simplelightbox';
+// Add imports above this line
+import { galleryItems } from './gallery-items';
+// Change code below this line
 import 'simplelightbox/dist/simple-lightbox.min.css';
-import '../css/common.css';
-import '../css/01-gallery.css';
 
-const createItemsMarkup = galleryItems
-  .map(({ preview, original, description }) => {
-    return `
-    <a class="gallery__item" href="${original}">
-    <img class="gallery__image" src="${preview}" alt="${description}" />
+console.log(galleryItems);
+
+const galleryEl = document.querySelector('.gallery');
+
+const arrayEl = galleryItems.reduce(
+  (acc, { preview, original, description }) =>
+    acc +
+    `<a class="gallery__link" href="${original}">
+    <img
+      class="gallery__image"
+      src="${preview}"
+      alt="${description}"
+    />
   </a>
-      `;
-  })
-  .join('');
+`,
+  '',
+);
+galleryEl.insertAdjacentHTML('afterbegin', arrayEl);
 
-const alleryContainerEl = document.querySelector('.gallery');
-alleryContainerEl.insertAdjacentHTML('beforeend', createItemsMarkup);
-let lightbox = new SimpleLightbox('.gallery a', {
-  scrollZoom: false,
-  captionDelay: 250,
+const optionsForModal = {
   captionsData: 'alt',
-  doubleTapZoom: 1,
-});
-alleryContainerEl.addEventListener('click', event => {
-  event.preventDefault();
-  if (!event.target.classList.contains('gallery__image')) {
-    return;
-  }
-});
+  captionDelay: 250,
+};
 
-//console.log(galleryItems);
+const modalFromLib = new SimpleLightbox('.gallery__link', optionsForModal);

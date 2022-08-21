@@ -1,34 +1,27 @@
-import '../css/common.css';
 import Player from '@vimeo/player';
-import { throttle } from 'lodash';
-
-const TIME_KEY = 'videoplayer-current-time';
+import throttle from 'lodash.throttle';
 const iframe = document.querySelector('iframe');
 const player = new Vimeo.Player(iframe);
+const STORAGE_KEY = 'videoplayer-current-time';
 
-const onPlay = function (data) {
-  const strigifyData = JSON.stringify(data);
-  localStorage.setItem(TIME_KEY, strigifyData);
-};
-player.on('timeupdate', throttle(onPlay, 1000));
+player.on('play', function () {
+  console.log('played the video!');
+  player.on('timeupdate', throttle(recordingPlayingTime, 1000));
+});
 
-function resumePlayback() {
-  if (JSON.parse(localStorage.getItem(TIME_KEY)) === null) {
-    return;
-  }
-  const paused = JSON.parse(localStorage.getItem(TIME_KEY))['seconds'];
-  if (paused) {
-    player
-      .setCurrentTime(paused)
-      .then(function (seconds) {})
-      .catch(function (error) {
-        switch (error.name) {
-          case 'Error':
-            break;
-          default:
-            break;
-        }
-      });
+function recordingPlayingTime(event) {
+  console.log(event);
+  localStorage.setItem(STORAGE_KEY, event.seconds);
+}
+getValueFromlocalStorage();
+
+function getValueFromlocalStorage() {
+  const valueLocalStorage = localStorage.getItem(STORAGE_KEY);
+  if (valueLocalStorage) {
+    player.setCurrentTime(valueLocalStorage);
   }
 }
-resumePlayback();
+
+player.getVideoTitle().then(function (title) {
+  console.log('title:', title);
+});
